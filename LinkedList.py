@@ -78,8 +78,64 @@ class LinkedList:
             self.head = None
             self.tail = None
         return temp
-        
 
+    def get(self, index):
+        if index<0 or index>=self.length:
+            return None
+        temp = self.head
+        for _ in range(index):
+            temp = temp.next
+        return temp
+
+    def set_value(self, index, value):
+        if index<0 or index>=self.length:
+            return False
+        node = self.get(index)
+        node.value = value
+        return True
+
+    def insert(self, index, value):
+        if index<0 or index>self.length:
+            return False
+        if index == 0:
+            return self.prepend(value)
+        elif index == self.length:
+            return self.append(value)
+        else:
+            prev = self.get(index-1)
+            new_node = Node(value)
+            new_node.next = prev.next
+            prev.next = new_node
+            self.length += 1
+            return True
+
+    def remove(self, index):
+        if index<0 or index>=self.length:
+            return None
+        if index == 0:
+            node = self.pop_first()
+        elif index == self.length -1:
+            node = self.pop()
+        else:
+            prev = self.get(index-1)
+            node = self.get(index)
+            prev.next = node.next
+            node.next = None
+            self.length -=1
+        return node
+
+    def reverse(self):
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        prev = None
+        after = None
+        
+        for _ in range(self.length):
+            after = temp.next
+            temp.next = prev
+            prev = temp
+            temp = after
     
 
 '''LL: Constructor
@@ -317,4 +373,255 @@ print(my_linked_list.pop_first())
     1
     None
 
+"""
+
+'''
+LL: Get
+Implement the get method for the LinkedList class.
+The get method should take an integer index as a parameter and return a pointer to the node at the specified index in the linked list.
+If the index is out of bounds (less than 0 or greater than or equal to the length of the list), the method should return None.
+Keep in mind the following requirements:
+The method should handle the cases where the index is out of bounds.
+The method should start at the head of the list and traverse the list using the next attribute of the nodes.
+The method should stop traversing the list when it reaches the specified index and return the node at that position.
+If the index is out of bounds, the method should return None.'''
+my_linked_list = LinkedList(0)
+my_linked_list.append(1)
+my_linked_list.append(2)
+my_linked_list.append(3)
+
+print(my_linked_list.get(3).value)
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    3
+
+"""
+'''
+LL: Set
+Implement the set_value method for the LinkedList class.
+The set_value method should take an integer index and a value as parameters and update the value of the node at the specified index in the linked list.
+If the index is out of bounds, the method should return False. If the value is successfully updated, the method should return True.
+Keep in mind the following requirements:
+The method should utilize the get method to find the node at the specified index.
+The method should update the value of the node if the node is found.
+The method should return True if the value is successfully updated.
+If the node is not found (i.e., the index is out of bounds), the method should return False.
+'''
+
+my_linked_list = LinkedList(11)
+my_linked_list.append(3)
+my_linked_list.append(23)
+my_linked_list.append(7)
+
+print('LL before set_value():')
+my_linked_list.print_list()
+
+my_linked_list.set_value(1,4)
+
+print('\nLL after set_value():')
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    LL before set_value():
+    11
+    3
+    23
+    7
+
+    LL after set_value():
+    11
+    4
+    23
+    7
+"""
+'''
+LL: Insert
+Implement the insert method for the LinkedList class.
+Method signature: def insert(self, index, value):
+The insert method should take an integer index and a value as parameters and insert a new node with the given value at the specified index in the linked list.
+If the index is out of bounds, the method should return False. If the new node is successfully inserted, the method should return True.
+Keep in mind the following requirements:
+The method should handle edge cases, such as inserting a new node at the beginning or end of the list.
+The method should utilize the prepend, append, and get methods for handling these edge cases.
+The method should create a new node with the given value and insert it at the specified index.
+The method should update the next attribute of the previous node to point to the new node.
+The method should increment the length attribute of the LinkedList class.
+The method should return True if the new node is successfully inserted.
+If the index is out of bounds, the method should return False.'''
+my_linked_list = LinkedList(1)
+my_linked_list.append(3)
+
+
+print('LL before insert():')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(1,2)
+
+print('\nLL after insert(2) in middle:')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(0,0)
+
+print('\nLL after insert(0) at beginning:')
+my_linked_list.print_list()
+
+
+my_linked_list.insert(4,4)
+
+print('\nLL after insert(4) at end:')
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    LL before insert():
+    1
+    3
+
+    LL after insert(2) in middle:
+    1
+    2
+    3
+
+    LL after insert(0) at beginning:
+    0
+    1
+    2
+    3
+
+    LL after insert(4) at end:
+    0
+    1
+    2
+    3
+    4
+
+"""
+
+'''
+LL: Remove
+Implement the remove method for the LinkedList class.
+The remove method should take an integer index as a parameter and remove the node at the specified index in the linked list, returning the removed node.
+If the index is out of bounds, the method should return None.
+Keep in mind the following requirements:
+The method should handle edge cases, such as removing a node at the beginning or end of the list.
+The method should utilize the pop_first() and pop() methods for handling these edge cases.
+The method should use the get() method to find the node previous to the one to be removed.
+The method should update the next attribute of the previous node to point to the node after the removed one.
+The method should decrement the length attribute of the LinkedList class.
+The method should return the removed node if the removal is successful.
+If the index is out of bounds, the method should return None.'''
+
+my_linked_list = LinkedList(1)
+my_linked_list.append(2)
+my_linked_list.append(3)
+my_linked_list.append(4)
+my_linked_list.append(5)
+
+print('LL before remove():')
+my_linked_list.print_list()
+
+print('\nRemoved node:')
+print(my_linked_list.remove(2).value)
+print('LL after remove() in middle:')
+my_linked_list.print_list()
+
+print('\nRemoved node:')
+print(my_linked_list.remove(0).value)
+print('LL after remove() of first node:')
+my_linked_list.print_list()
+
+print('\nRemoved node:')
+print(my_linked_list.remove(2).value)
+print('LL after remove() of last node:')
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    LL before remove():
+    1
+    2
+    3
+    4
+    5
+
+    Removed node:
+    3
+    LL after remove() in middle:
+    1
+    2
+    4
+    5
+
+    Removed node:
+    1
+    LL after remove() of first node:
+    2
+    4
+    5
+
+    Removed node:
+    5
+    LL after remove() of last node:
+    2
+    4
+
+"""
+
+'''LL: Reverse
+Implement the reverse method for the LinkedList class.
+The reverse method should reverse the order of the nodes in the linked list so that the head becomes the tail and the tail becomes the head.
+The method should not create any new nodes or modify the values of the nodes.
+The method should only update the next attribute of each node to point to the previous node in the list.
+Consider the following requirements while implementing the method:
+The method should handle edge cases, such as an empty list or a list with a single node.
+The method should utilize a temporary variable to swap the head and tail attributes of the LinkedList class.
+The method should use a loop to iterate through the nodes in the list and update the next attribute of each node.
+The method should not modify the length attribute of the LinkedList class.'''
+
+my_linked_list = LinkedList(1)
+my_linked_list.append(2)
+my_linked_list.append(3)
+my_linked_list.append(4)
+
+print('LL before reverse():')
+my_linked_list.print_list()
+
+my_linked_list.reverse()
+
+print('\nLL after reverse():')
+my_linked_list.print_list()
+
+
+
+"""
+    EXPECTED OUTPUT:
+    ----------------
+    LL before reverse():
+    1
+    2
+    3
+    4
+
+    LL after reverse():
+    4
+    3
+    2
+    1
+    
 """
